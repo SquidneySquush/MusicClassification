@@ -29,6 +29,7 @@ def distance(instance1 , instance2 , k ):
     cm1 = instance1[1]
     mm2 = instance2[0]
     cm2 = instance2[1]
+    # print( mm2, cm2)
     distance = np.trace(np.dot(np.linalg.inv(cm2), cm1)) 
     distance+=(np.dot(np.dot((mm2-mm1).transpose() , np.linalg.inv(cm2)) , mm2-mm1 )) 
     distance+= np.log(np.linalg.det(cm2)) - np.log(np.linalg.det(cm1))
@@ -54,7 +55,9 @@ def nearestClass(neighbors):
             classVote[response]+=1 
         else:
             classVote[response]=1 
+    print(classVote)
     sorter = sorted(classVote.items(), key = operator.itemgetter(1), reverse=True)
+    print(sorter)
     return sorter[0][0]
 
 
@@ -62,15 +65,22 @@ results=defaultdict(int)
 
 i=1
 for folder in os.listdir("genres/"):
-    results[i]=folder
-    i+=1
+    if folder.endswith(".mf"):
+        continue
+    else:
+        results[i]=folder
+        i+=1
 
 (rate,sig)=wav.read("SampleRap.wav")
 mfcc_feat=mfcc(sig,rate,winlen=0.020,appendEnergy=False)
 covariance = np.cov(np.matrix.transpose(mfcc_feat))
 mean_matrix = mfcc_feat.mean(0)
 feature=(mean_matrix,covariance,0)
+pred=nearestClass(getNeighbors(dataset, feature, 5))
 
-pred=nearestClass(getNeighbors(dataset ,feature , 5))
-
+# print("mfcc: ",  mfcc_feat, mfcc_feat.shape)
+print("cov: \n", covariance.shape)
+# print("mean_matrix: \n", mean_matrix, mean_matrix.shape)
+#print("feature: \n", feature )
+# print("prediction: \n", pred)
 print(results[pred])

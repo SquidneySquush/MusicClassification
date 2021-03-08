@@ -18,12 +18,7 @@ from sklearn.cluster import KMeans
 from sklearn.metrics import silhouette_score
 from sklearn.preprocessing import StandardScaler
 
-# getting the optimal number of clusters using the elbow method
-
-wcss = []
-
-for i in range(1,11):
-    kmeans 
+clusters = 10 
 
 def getNeighbors(trainingSet, instance, k):
     distances = []
@@ -45,8 +40,9 @@ def nearestClass(neighbors):
             classVote[response]+=1 
         else:
             classVote[response]=1
-
+    print(classVote)
     sorter = sorted(classVote.items(), key = operator.itemgetter(1), reverse=True)
+    print(sorter)
     return sorter[0][0]
 
 def getAccuracy(testSet, predictions):
@@ -93,24 +89,4 @@ def loadDataset(filename , split , trSet , teSet):
 
 trainingSet = []
 testSet = []
-loadDataset("my.dat" , 0.66, trainingSet, testSet)
-
-dataset = []
-def loadDataset(filename , split , trSet , teSet):
-    with open("my.dat" , 'rb') as f:
-        while True:
-            try:
-                dataset.append(pickle.load(f))
-            except EOFError:
-                f.close()
-                break	
-
-    for x in range(len(dataset)):
-        if random.random() <split :			
-            trSet.append(dataset[x])
-        else:
-            teSet.append(dataset[x])	
-
-trainingSet = []
-testSet = []
-loadDataset("my.dat" , 0.66, trainingSet, testSet) # Taking 66% of dataset
+loadDataset("my.dat" , 0.66, trainingSet, testSet)  # Taking 66% of dataset
