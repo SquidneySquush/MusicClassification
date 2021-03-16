@@ -60,7 +60,7 @@ i=0
 
 for folder in os.listdir(directory):
     # i+=1
-    print(folder)
+    #print(folder)
     # if i==11 :
     #     break 
     if folder.endswith(".mf"):
@@ -100,8 +100,12 @@ loadDataset("my.dat" , 0.66, trainingSet, testSet) # Taking 66% of dataset
 
 leng = len(testSet)
 predictions = []
-for x in range (leng):
-    predictions.append(nearestClass(getNeighbors(trainingSet ,testSet[x] , 5))) 
+for k in range(1, 20, 1):
+    accuracy1 = 0
+    predictions = []
+    for x in range (leng):
+        predictions.append(nearestClass(getNeighbors(trainingSet ,testSet[x] , k))) 
 
-accuracy1 = getAccuracy(testSet , predictions)
-print(accuracy1)
+    accuracy1 = getAccuracy(testSet , predictions)
+    print(k,'=', accuracy1)
+    
